@@ -30,10 +30,14 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.consumerestapi.R
 import com.example.consumerestapi.model.Kontak
 import com.example.consumerestapi.navigation.DestinasiNavigasi
+import com.example.consumerestapi.ui.PenyediaViewModel
+import com.example.consumerestapi.ui.home.viewmodel.HomeViewModel
 import com.example.consumerestapi.ui.home.viewmodel.KontakUIState
+import java.nio.file.attribute.AclEntry
 
 object DestinasiHome : DestinasiNavigasi {
     override val route = "home"
@@ -42,7 +46,10 @@ object DestinasiHome : DestinasiNavigasi {
 
 @Composable
 fun HomeScreen(
-
+    navigateToItemEntry: () -> Unit,
+    modifier: Modifier = Modifier,
+    onDetailClick: (Kontak) -> Unit = {},
+    viewModel: HomeViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ){}
 
 @Composable
