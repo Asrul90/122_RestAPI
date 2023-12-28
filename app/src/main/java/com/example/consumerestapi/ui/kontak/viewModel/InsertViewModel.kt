@@ -7,10 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.consumerestapi.model.Kontak
 import com.example.consumerestapi.repository.KontakRepository
-import com.example.consumerestapi.ui.home.viewmodel.InsertUiEvent
-import com.example.consumerestapi.ui.home.viewmodel.InsertUiState
-import com.example.consumerestapi.ui.home.viewmodel.toInsertUiEvent
-import com.example.consumerestapi.ui.home.viewmodel.toKontak
 import kotlinx.coroutines.launch
 
 class InsertViewModel (private val kontakRepository: KontakRepository) : ViewModel(){
