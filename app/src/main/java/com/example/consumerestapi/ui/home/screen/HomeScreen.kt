@@ -47,7 +47,7 @@ import com.example.consumerestapi.ui.home.viewmodel.KontakUIState
 
 object DestinasiHome : DestinasiNavigasi {
     override val route = "home"
-    override val titleRes = "kontak"
+    override val titleRes = "Kontak"
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,10 +57,10 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     onDetailClick: (Int) -> Unit = {},
     viewModel: HomeViewModel = viewModel(factory = PenyediaViewModel.Factory)
-){
+) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-    Scaffold (
+    Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopAppBarKontak(
@@ -74,16 +74,20 @@ fun HomeScreen(
                 onClick = navigateToItemEntry,
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(18.dp)
-            ){
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Add kontak"
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Add Kontak"
                 )
             }
         },
-    ){ innerPadding ->
+    ) { innerPadding ->
 
         HomeStatus(
             kontakUIState = viewModel.kontakUIState,
-            retryAction = { viewModel.getKontak() },
+            retryAction = {
+                viewModel.getKontak()
+            },
             modifier = Modifier.padding(innerPadding),
 
             onDetailClick = onDetailClick,
@@ -91,10 +95,11 @@ fun HomeScreen(
                 viewModel.deleteKontak(it.id)
                 viewModel.getKontak()
             }
-            )
+        )
 
     }
 }
+
 
 @Composable
 fun HomeStatus(
@@ -104,50 +109,46 @@ fun HomeStatus(
     onDeleteClick: (Kontak) -> Unit = {},
     onDetailClick: (Int) -> Unit
 ) {
-    when (kontakUIState){
-    is KontakUIState.Loading -> OnLoading(modifier = modifier.fillMaxSize())
+
+    when (kontakUIState) {
+        is KontakUIState.Loading -> OnLoading(modifier = modifier.fillMaxSize())
         is KontakUIState.Success -> KontakLayout(
-            kontak = kontakUIState.kontak,
-            modifier = modifier.fillMaxWidth(),
+            kontak = kontakUIState.kontak, modifier = modifier.fillMaxWidth(),
             onDetailClick = {
                 onDetailClick(it.id)
             },
             onDeleteClick = {
                 onDeleteClick(it)
-            })
-        
+            }
+        )
+
         is KontakUIState.Error -> OnError(retryAction, modifier = modifier.fillMaxSize())
     }
+
 }
 
 @Composable
 fun OnLoading(modifier: Modifier = Modifier) {
     Image(
         modifier = modifier.size(200.dp),
-        painter = painterResource(id = R.drawable.loading_img),
-        contentDescription = stringResource(id = R.string.loading))
+        painter = painterResource(R.drawable.loading_img),
+        contentDescription = stringResource(R.string.loading)
+    )
 }
 
 @Composable
-fun OnError(
-    retryAction: () -> Unit,
-    modifier: Modifier= Modifier){
-    Column (
+fun OnError(retryAction: () -> Unit, modifier: Modifier = Modifier) {
+    Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_connection_error),
-            contentDescription =""
+            painter = painterResource(id = R.drawable.ic_connection_error), contentDescription = ""
         )
-        Text(text = stringResource(id = R.string.loading_failed),
-            modifier = Modifier.padding(16.dp)
-        )
-        Button(
-            onClick = retryAction
-        ) {
-            Text(stringResource(id = R.string.retry))
+        Text(text = stringResource(R.string.loading_failed), modifier = Modifier.padding(16.dp))
+        Button(onClick = retryAction) {
+            Text(stringResource(R.string.retry))
         }
     }
 }
@@ -155,48 +156,50 @@ fun OnError(
 @Composable
 fun KontakLayout(
     kontak: List<Kontak>,
-    modifier: Modifier= Modifier,
+    modifier: Modifier = Modifier,
     onDetailClick: (Kontak) -> Unit,
     onDeleteClick: (Kontak) -> Unit = {}
 ) {
     LazyColumn(
-        modifier = Modifier,
-    contentPadding = PaddingValues(16.dp),
+        modifier = modifier,
+        contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
-    ){
-        items(kontak){
-            kontak-> KontakCard(kontak = kontak, modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onDetailClick(kontak) },
+    ) {
+        items(kontak) { kontak ->
+            KontakCard(
+                kontak = kontak,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onDetailClick(kontak) },
                 onDeleteClick = {
-                    onDeleteClick(kontak)
-                }
-                )
+                    onDeleteClick(kontak)}
+            )
         }
     }
+
 }
 
 @Composable
 fun KontakCard(
     kontak: Kontak,
     onDeleteClick: (Kontak) -> Unit = {},
-    modifier: Modifier= Modifier
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
-        Column (
-            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Row (
-                modifier = Modifier.fillMaxWidth()
-            ){
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+            ) {
                 Text(
                     text = kontak.nama,
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleLarge,
                 )
                 Spacer(Modifier.weight(1f))
                 Icon(
@@ -208,21 +211,22 @@ fun KontakCard(
                     style = MaterialTheme.typography.titleMedium
                 )
             }
-            Row (
-                modifier = Modifier.fillMaxWidth(),
+            Row(modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = kontak.alamat,
+                    text = kontak.email,
                     style = MaterialTheme.typography.titleMedium
                 )
                 Spacer(Modifier.weight(1f))
-                IconButton(onClick = { onDeleteClick(kontak) }) {
+                IconButton(onClick = {onDeleteClick(kontak) }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = null)
-                    }
+                        contentDescription = null,
+                    )
                 }
+            }
         }
+
     }
 }

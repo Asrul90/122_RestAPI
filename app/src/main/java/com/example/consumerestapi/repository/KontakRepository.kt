@@ -5,29 +5,20 @@ import com.example.consumerestapi.network.KontakService
 import java.io.IOException
 
 interface KontakRepository {
-    /* Fetches list of Kontak from kontakApi*/
     suspend fun getKontak(): List<Kontak>
-
     suspend fun insertKontak(kontak: Kontak)
-
     suspend fun updateKontak(id: Int, kontak: Kontak)
-
     suspend fun deleteKontak(id: Int)
-
-    suspend fun getKontakByid(id: Int): Kontak
-
-
+    suspend fun getKontakById(id: Int): Kontak
 }
 
 class NetworkKontakRepository(
     private val kontakApiService: KontakService
-) : KontakRepository{
-    /* Fetches list of Kontak from kontakApi*/
+) : KontakRepository {
     override suspend fun getKontak(): List<Kontak> = kontakApiService.getKontak()
 
     override suspend fun insertKontak(kontak: Kontak) {
         kontakApiService.insertKontak(kontak)
-
     }
 
     override suspend fun updateKontak(id: Int, kontak: Kontak) {
@@ -38,17 +29,22 @@ class NetworkKontakRepository(
         try {
             val response = kontakApiService.deleteKontak(id)
             if (!response.isSuccessful) {
-                throw IOException("Failed to delete kontak. HTTP status code: ${response.code()}")
+                throw IOException("Failed to delete Kontak. HTTP status code: ${response.code()}")
             }
-            else{
+            else {
                 response.message()
+                println(response.message())
             }
-        } catch (e: Exception){
+        } catch (e: Exception) {
             throw e
         }
     }
 
-    override suspend fun getKontakByid(id: Int): Kontak {
-        TODO("Not yet implemented")
+
+    // get kontak by id
+    override suspend fun getKontakById(id: Int): Kontak {
+        return kontakApiService.getKontakById(id)
     }
+
+
 }

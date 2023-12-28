@@ -13,31 +13,32 @@ import com.example.consumerestapi.ui.kontak.screen.DestinasiEntry
 import com.example.consumerestapi.ui.kontak.screen.EntryKontakScreen
 
 @Composable
-fun PengelolahHalaman(navController: NavController = rememberNavController()){
+fun PengelolaHalaman(navController: NavHostController = rememberNavController()) {
 
     NavHost(
-        navController = navController as NavHostController,
+        navController = navController,
         startDestination = DestinasiHome.route,
         modifier = Modifier,
 
-    ){
-        composable(DestinasiHome.route){
-            HomeScreen(navigateToItemEntry = { navController.navigate(DestinasiEntry.route) },
-                onDetailClick = {}
-                )
+        ) {
+
+        composable(DestinasiHome.route) {
+            HomeScreen(navigateToItemEntry = {
+                navController.navigate(DestinasiEntry.route)
+            },
+                onDetailClick = {})
         }
-        composable(DestinasiEntry.route){
+        composable(DestinasiEntry.route) {
             EntryKontakScreen(navigateBack = {
                 navController.navigate(
                     DestinasiHome.route
-                ){
-                    popUpTo(
-                        DestinasiHome.route
-                    ){
+                ) {
+                    popUpTo(DestinasiHome.route) {
                         inclusive = true
                     }
                 }
             })
         }
     }
+
 }

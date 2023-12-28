@@ -9,53 +9,51 @@ import com.example.consumerestapi.model.Kontak
 import com.example.consumerestapi.repository.KontakRepository
 import kotlinx.coroutines.launch
 
-class InsertViewModel (private val kontakRepository: KontakRepository) : ViewModel(){
+class InsertViewModel(private val kontakRepository: KontakRepository) : ViewModel() {
 
-    var insertKontakUIState by mutableStateOf(InsertUiState())
+    var insertKontakState by mutableStateOf(InsertUiState())
         private set
 
-    fun updateInsertkontakState(insertUiEvent: InsertUiEvent){
-        insertKontakUIState = InsertUiState(insertUiEvent = insertUiEvent )
+    fun updateInsertKontakState(insertUiEvent: InsertUiEvent) {
+        insertKontakState = InsertUiState(insertUiEvent = insertUiEvent)
     }
 
-    suspend fun  insertKontak(){
+    suspend fun insertKontak() {
         viewModelScope.launch {
             try {
-                kontakRepository.insertKontak(insertKontakUIState.insertUiEvent.toKontak())
-            } catch (e: Exception){
+                kontakRepository.insertKontak(insertKontakState.insertUiEvent.toKontak())
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
-
 }
 
 data class InsertUiState(
     val insertUiEvent: InsertUiEvent = InsertUiEvent(),
 )
 
-data class InsertUiEvent(
+data class  InsertUiEvent(
     val id: Int = 0,
     val nama: String = "",
     val email: String = "",
-    val nohp: String = ""
+    val nohp: String = "",
 )
 
 fun InsertUiEvent.toKontak(): Kontak = Kontak(
     id = id,
     nama = nama,
-    alamat = email,
-    nohp = nohp
-)
-
-fun Kontak.toUiStateKontak(): InsertUiState = InsertUiState(
-    insertUiEvent = toInsertUiEvent(),
-
+    email = email,
+    nohp = nohp,
 )
 
 fun Kontak.toInsertUiEvent(): InsertUiEvent = InsertUiEvent(
     id = id,
     nama = nama,
-    email = alamat,
-    nohp = nohp
+    email = email,
+    nohp = nohp,
+)
+
+fun Kontak.toUiStateKontak(): InsertUiState = InsertUiState(
+    insertUiEvent = toInsertUiEvent(),
 )

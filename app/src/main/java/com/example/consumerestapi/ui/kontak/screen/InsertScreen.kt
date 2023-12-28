@@ -33,21 +33,20 @@ import com.example.consumerestapi.ui.kontak.viewModel.InsertViewModel
 import kotlinx.coroutines.launch
 
 object DestinasiEntry : DestinasiNavigasi {
-    override val route= "item_entry"
-    override val titleRes= "Entry Siswa"
+    override val route = "item_entry"
+    override val titleRes = "Entry Siswa"
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EntryKontakScreen(
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: InsertViewModel = viewModel(factory = PenyediaViewModel.Factory),
-){
+) {
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-
-    Scaffold (
+    Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopAppBarKontak(
@@ -56,12 +55,11 @@ fun EntryKontakScreen(
                 scrollBehavior = scrollBehavior,
                 navigateUp = navigateBack
             )
-        }
-    ) {innerPadding ->
+        }) { innerPadding ->
         EntryKontakBody(
-            insertUiState = viewModel.insertKontakUIState,
-            onSiswaValueChange = viewModel::updateInsertkontakState,
-            onSavedClick = {
+            insertUiState = viewModel.insertKontakState,
+            onSiswaValueChange = viewModel::updateInsertKontakState,
+            onSaveClick = {
                 coroutineScope.launch {
                     viewModel.insertKontak()
                     navigateBack()
@@ -75,7 +73,33 @@ fun EntryKontakScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
+@Composable
+fun EntryKontakBody(
+    insertUiState: InsertUiState,
+    onSiswaValueChange: (InsertUiEvent) -> Unit,
+    onSaveClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(18.dp),
+        modifier = modifier.padding(12.dp)
+    ) {
+        FormInputSiswa(
+            insertUiEvent = insertUiState.insertUiEvent,
+            onValueChange = onSiswaValueChange,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Button(
+            onClick = onSaveClick,
+            shape = MaterialTheme.shapes.small,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = "Simpan")
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FormInputSiswa(
     insertUiEvent: InsertUiEvent,
@@ -83,65 +107,45 @@ fun FormInputSiswa(
     onValueChange: (InsertUiEvent) -> Unit = {},
     enabled: Boolean = true
 ) {
-    Column (
+    Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         OutlinedTextField(
             value = insertUiEvent.nama,
-            onValueChange = {onValueChange(insertUiEvent.copy(nama = it))},
-            label = { Text("Nama")},
+            onValueChange = { onValueChange(insertUiEvent.copy(nama = it)) },
+            label = { Text("Nama") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true
         )
         OutlinedTextField(
             value = insertUiEvent.email,
-            onValueChange = {onValueChange(insertUiEvent.copy(email = it))},
-            label = { Text("Email")},
+            onValueChange = { onValueChange(insertUiEvent.copy(email = it)) },
+            label = { Text("Email") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true
         )
         OutlinedTextField(
             value = insertUiEvent.nohp,
-            onValueChange = {onValueChange(insertUiEvent.copy(nohp = it))},
+            onValueChange = { onValueChange(insertUiEvent.copy(nohp = it)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            label = { Text("Telepon") },
+            label = { Text(text = "No HP") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true
         )
 
+        if (enabled) {
+            Text(
+                text = "Isi semua data",
+                modifier = Modifier.padding(start = 12.dp)
+            )
+        }
         Divider(
-            thickness = dimensionResource(id = R.dimen.padding_small),
-            modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.padding_medium))
+            thickness = 8.dp,
+            modifier = Modifier.padding(12.dp)
         )
     }
-}
-
-@Composable
-fun EntryKontakBody(
-    insertUiState: InsertUiState,
-    onSiswaValueChange: (InsertUiEvent) -> Unit,
-    onSavedClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column (
-        verticalArrangement = Arrangement.spacedBy(18.dp),
-        modifier = modifier.padding(12.dp)
-    ){
-        FormInputSiswa(
-            insertUiEvent = insertUiState.insertUiEvent,
-            onValueChange = onSiswaValueChange,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Button(
-            onClick = onSavedClick,
-            shape = MaterialTheme.shapes.small,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = "Simpan")
-            }
-        }
 }

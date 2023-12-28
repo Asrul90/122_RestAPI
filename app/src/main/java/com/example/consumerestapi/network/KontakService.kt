@@ -10,7 +10,7 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 
-interface KontakService {
+interface  KontakService {
     @Headers(
         "Accept: application/json"
     )
@@ -24,8 +24,10 @@ interface KontakService {
     suspend fun insertKontak(@Body kontak: Kontak)
 
     @PUT("/kontak/{id}")
-    suspend fun updateKontak(@Path("id")id: Int, @Body kontak: Kontak)
+    suspend fun updateKontak(@Path("id") id: Int, @Body kontak: Kontak)
 
     @DELETE("/kontak/{id}")
     suspend fun deleteKontak(@Path("id") id: Int): Response<Void>
+
+
 }
