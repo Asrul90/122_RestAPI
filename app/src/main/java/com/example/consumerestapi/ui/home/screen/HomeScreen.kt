@@ -44,7 +44,6 @@ import com.example.consumerestapi.ui.PenyediaViewModel
 import com.example.consumerestapi.ui.TopAppBarKontak
 import com.example.consumerestapi.ui.home.viewmodel.HomeViewModel
 import com.example.consumerestapi.ui.home.viewmodel.KontakUIState
-import java.nio.file.attribute.AclEntry
 
 object DestinasiHome : DestinasiNavigasi {
     override val route = "home"
@@ -56,7 +55,7 @@ object DestinasiHome : DestinasiNavigasi {
 fun HomeScreen(
     navigateToItemEntry: () -> Unit,
     modifier: Modifier = Modifier,
-    onDetailClick: (Kontak) -> Unit = {},
+    onDetailClick: (Int) -> Unit = {},
     viewModel: HomeViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ){
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -80,6 +79,21 @@ fun HomeScreen(
                 )
             }
         },
+    ){ innerPadding ->
+
+        HomeStatus(
+            kontakUIState = viewModel.kontakUIState,
+            retryAction = { viewModel.getKontak() },
+            modifier = Modifier.padding(innerPadding),
+
+            onDetailClick = onDetailClick,
+            onDeleteClick = {
+                viewModel.deleteKontak(it.id)
+                viewModel.getKontak()
+            }
+            )
+
+    }
 }
 
 @Composable
