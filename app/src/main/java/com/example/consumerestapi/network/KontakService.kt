@@ -14,18 +14,18 @@ interface KontakService {
     @Headers(
         "Accept: application/json"
     )
-    @GET("kontak")
+    @GET("/kontak")
     suspend fun getKontak(): List<Kontak>
 
-    @GET("kontak/{id}")
+    @GET("/kontak/{id}")
     suspend fun getKontakById(@Path("id") id: Int): Kontak
 
-    @POST("kontak")
+    @POST("/kontak")
     suspend fun insertKontak(@Body kontak: Kontak)
 
-    @PUT("kontak/{id}")
+    @PUT("/kontak/{id}")
     suspend fun updateKontak(@Path("id")id: Int, @Body kontak: Kontak)
 
-    @DELETE("kontak/{id}")
+    @DELETE("/kontak/{id}")
     suspend fun deleteKontak(@Path("id") id: Int): Response<Void>
 }

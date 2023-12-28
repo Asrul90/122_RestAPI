@@ -10,7 +10,7 @@ interface AppContainer{
     val kontakRepository: KontakRepository
 }
 class KontakContainer : AppContainer {
-    private val baseUrl = "http://localhost:8080/kontak"
+    private val baseUrl = "http://localhost:8080"
     private val json = Json {ignoreUnknownKeys = true}
     private val retrofit: Retrofit = Retrofit.Builder()
         .addConverterFactory(json.asConverterFactory("applicaation/json".toMediaType()))

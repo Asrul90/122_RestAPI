@@ -34,7 +34,6 @@ fun KontakApp(
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold (
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = { TopAppBar(scrollBehavior = scrollBehavior)}
     ){
         Surface (
             modifier = Modifier
@@ -74,17 +73,4 @@ fun TopAppBarKontak(
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TopAppBar(scrollBehavior: TopAppBarScrollBehavior, modifier: Modifier = Modifier) {
-    CenterAlignedTopAppBar(
-        scrollBehavior = scrollBehavior,
-        title = {
-            Text(
-                text = stringResource(id = R.string.app_name),
-                style = MaterialTheme.typography.headlineSmall,
-            )
-        },
-        modifier = modifier
-    )
-}
+
