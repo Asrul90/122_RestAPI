@@ -27,7 +27,8 @@ import com.example.consumerestapi.R
 import com.example.consumerestapi.navigation.DestinasiNavigasi
 import com.example.consumerestapi.ui.PenyediaViewModel
 import com.example.consumerestapi.ui.TopAppBarKontak
-import com.example.consumerestapi.ui.home.viewmodel.InsertUiEvent
+import com.example.consumerestapi.ui.kontak.viewModel.InsertUiEvent
+import com.example.consumerestapi.ui.kontak.viewModel.InsertUiState
 import com.example.consumerestapi.ui.kontak.viewModel.InsertViewModel
 import kotlinx.coroutines.launch
 
@@ -106,7 +107,7 @@ fun FormInputSiswa(
             value = insertUiEvent.nohp,
             onValueChange = {onValueChange(insertUiEvent.copy(nohp = it))},
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            label = { Text("Telepon")},
+            label = { Text("Telepon") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true
@@ -121,7 +122,7 @@ fun FormInputSiswa(
 
 @Composable
 fun EntryKontakBody(
-    insertUiState: com.example.consumerestapi.ui.home.viewmodel.InsertUiState,
+    insertUiState: InsertUiState,
     onSiswaValueChange: (InsertUiEvent) -> Unit,
     onSavedClick: () -> Unit,
     modifier: Modifier = Modifier
